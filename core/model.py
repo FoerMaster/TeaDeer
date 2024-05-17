@@ -5,6 +5,7 @@ import random
 import shutil
 from PIL import Image
 import matplotlib.pyplot as plt
+import threading
 
 class TeaDeer:
     def __init__(self):
@@ -33,10 +34,10 @@ class TeaDeer:
                     full_path = os.path.join(root, file)
                     if get_file_type(full_path) == 'img':
                         print(f"✨ Processing 🏙️ image {_class} in {full_path}")
-                        markImage(_class, full_path, save_directory)
+                        threading.Thread(target=markImage, args=(_class, full_path, save_directory)).start()
                     elif get_file_type(full_path) == 'vid':
                         print(f"✨ Processing 📹 video {_class} in {full_path}")
-                        markVideo(_class, full_path, save_directory)
+                        threading.Thread(target=markVideo, args=(_class, full_path, save_directory)).start()
                     else:
                         raise NameError('Unknown file format')
                 except:
