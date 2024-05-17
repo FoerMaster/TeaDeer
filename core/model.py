@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 from core.marking import *
+from core.packing import *
 import os
 import random
 import shutil
@@ -17,6 +18,7 @@ class TeaDeer:
     def detect(self, source, stream=False, ):
         if not self.model:
             raise 'Model not loaded!'
+        sort(self.model(source, imgsz=1280, conf=0.5, stream=stream))
         return self.model(source, imgsz=1280, conf=0.5, stream=stream)
 
     def plot(self, result):
