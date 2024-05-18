@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.properties import BooleanProperty
+import kivymd.icon_definitions
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout):
     ''' Добавляет поведение выбора и фокуса к представлению. '''

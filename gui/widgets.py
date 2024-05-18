@@ -2,8 +2,6 @@ from kivy.uix.label import Label
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.uix.popup import Popup
-from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
 from kivymd.app import MDApp
@@ -24,7 +22,7 @@ import shutil
 import userpaths
 import random
 import string
-import subprocess
+
 
 class MyApp(MDApp):
     def build(self):
@@ -109,6 +107,7 @@ class MyApp(MDApp):
         float_layout.add_widget(main_layout)
 
         return float_layout
+
     def on_row_press(self,  table, row):
         # get start index from selected row item range
         start_index, end_index = row.table.recycle_data[row.index]["range"]

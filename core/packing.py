@@ -1,4 +1,3 @@
-from core.model import *
 import shutil
 import os
 def sort(
