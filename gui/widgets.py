@@ -4,14 +4,18 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.textinput import TextInput
+from kivy.uix.filechooser import FileChooserIconView
+from kivy.uix.popup import Popup
 from kivy.graphics import Rectangle, Color
 
 from gui.screens import MainScreen
 
+
 class RV(RecycleView):
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
-        self.data = [{'text': f'Элемент {i+1}'} for i in range(5)]
+        self.data = [{'text': f'Элемент {i + 1}'} for i in range(5)]
+
 
 class MyApp(App):
     def build(self):
@@ -30,7 +34,7 @@ class MyApp(App):
 
         # Добавление границы к list_layout
         with list_layout.canvas.before:
-            Color(210/255, 210/255, 210/255, 1)  # Цвет границы (светло-серый)
+            Color(210 / 255, 210 / 255, 210 / 255, 1)  # Цвет границы (светло-серый)
             self.rect = Rectangle(size=list_layout.size, pos=list_layout.pos)
         list_layout.bind(pos=self.update_rect, size=self.update_rect)
 
@@ -40,6 +44,7 @@ class MyApp(App):
             size_hint_x=1,
             size_hint_y=None,
             height=50)
+        button.bind(on_release=self.open_file_chooser)
         list_layout.add_widget(button)
 
         # Добавление отступа между кнопкой и списком
@@ -75,8 +80,28 @@ class MyApp(App):
         # Добавление правого грида в правый столбец основного grid
         main_grid.add_widget(right_grid)
 
+        # Установка зоны перетаскивания файлов для list_layout
+        list_layout.on_dropfile = self._on_file_drop
+
         return main_grid
 
     def update_rect(self, instance, value):
         self.rect.pos = instance.pos
         self.rect.size = instance.size
+
+    def _on_file_drop(self, window, file_path):
+        print(f'File dropped: {file_path.decode("utf-8")}')
+
+    def open_file_chooser(self, instance):
+        filechooser = FileChooserIconView()
+        popup = Popup(title="Выберите файл",
+                      content=filechooser,
+                      size_hint=(0.9, 0.9))
+        filechooser.bind(on_selection=lambda x: self._on_file_select(x.selection, popup))
+        popup.open()
+
+    def _on_file_select(self, selection, popup):
+        if selection:
+            print(f'File selected: {selection[0]}')
+        popup.dismiss()
+
