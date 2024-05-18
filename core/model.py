@@ -18,8 +18,7 @@ class TeaDeer:
     def detect(self, source, stream=False, ):
         if not self.model:
             raise 'Model not loaded!'
-        sort(self.model(source, imgsz=1280, conf=0.5, stream=stream))
-        return self.model(source, imgsz=1280, conf=0.5, stream=stream)
+        return self.model(source, stream=stream, retina_masks=True)
 
     def plot(self, result):
         im_bgr = result.plot()
@@ -27,7 +26,8 @@ class TeaDeer:
         plt.axis('off')
         plt.imshow(im_rgb)
         plt.show()
-
+    def compress(self,dir,name='output'):
+        shutil.make_archive(name, 'zip', dir)
     def markDrafts(self, directory, save_directory):
         for root, dirs, files in os.walk(directory):
             _class = os.path.basename(root)
@@ -44,7 +44,7 @@ class TeaDeer:
                         raise NameError('Unknown file format')
                 except:
                     print(f"⚠️ File has an unknown format or is damaged!")
-    def splitDataset(self, base_path, train_ratio=0.7, val_ratio=0.15, seed=62):
+    def splitDataset(self, base_path, train_ratio=0.7, val_ratio=0.3, seed=62):
         random.seed(seed)
         images_path = os.path.join(base_path, "images")
         labels_path = os.path.join(base_path, "labels")
@@ -67,9 +67,9 @@ class TeaDeer:
 
         def copy_files(files, set_type):
             for file in files:
-                shutil.copy(os.path.join(images_path, file), os.path.join(base_path, set_type, "images"))
+                shutil.move(os.path.join(images_path, file), os.path.join(base_path, set_type, "images"))
                 label_file = file.rsplit(".", 1)[0] + ".txt"
-                shutil.copy(os.path.join(labels_path, label_file),os.path.join(base_path, set_type, "labels"),)
+                shutil.move(os.path.join(labels_path, label_file),os.path.join(base_path, set_type, "labels"),)
 
         copy_files(train_files, "train")
         copy_files(val_files, "val")
