@@ -1,0 +1,17 @@
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Hello from MainScreen!'
+        Button:
+            text: 'Go to AnotherScreen'
+            on_press: app.root.current = 'another'
+
+<AnotherScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Hello from AnotherScreen!'
+        Button:
+            text: 'Back to MainScreen'
+            on_press: app.root.current = 'main'
