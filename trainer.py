@@ -1,9 +1,7 @@
-from core.model import TeaDeer
+from core.packing import sort
+td = TeaDeer() # Общий класс
+td.load('models/best_seg.pt') # Подгрузка модели из файла
+results = td.detect('media')
+for result in results:
+    td.plot(result)
 
-
-td = TeaDeer()
-td.load('models/640_normal.pt')
-
-results =  td.detect('media',stream=True)
-for r in results:
-    td.plot(r)

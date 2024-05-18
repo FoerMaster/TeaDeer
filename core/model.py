@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 from core.marking import *
+from core.packing import *
 import os
 import random
 import shutil

@@ -1,0 +1,5 @@
+.venv
+traning/dataset/*
+traning/dataset/peparing/*
+*.jpg
+*.zip

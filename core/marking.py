@@ -35,18 +35,60 @@ def markVideo(_class, path, save_directory):
             alpha = 0.7
             image_with_transparent_text = cv2.addWeighted(image, 1 - alpha, mask, alpha, 0)
             random_chars = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
-            cv2.imwrite(save_directory + _class + "_%d_%s.jpg" % (capt, random_chars), image_with_transparent_text)
+
+            gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+            # Calculate the aspect ratio of the original image
+            aspect_ratio = gray_image.shape[1] / gray_image.shape[0]
+
+            # Define the new dimensions
+            new_width = 1280
+            new_height = int(new_width / aspect_ratio)
+
+            # If the new height is still greater than 720, adjust the width accordingly
+            if new_height > 720:
+                new_height = 720
+                new_width = int(new_height * aspect_ratio)
+
+            # Resize the image without stretching
+            resized_image = cv2.resize(gray_image, (new_width, new_height))
+
+            cv2.putText(resized_image, _class, (12, 42), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1,
+                        cv2.LINE_AA)
+            cv2.putText(resized_image, _class, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1,
+                        cv2.LINE_AA)
+            cv2.imwrite(save_directory + _class + "_%d_%s.jpg" % (capt, random_chars), resized_image)
             capt += 1
             prev_image = image
 
 
 def markImage(_class, file, save_directory):
     image = cv2.imread(file)
-    text_bg_color = (111, 190, 248)
-    cv2.putText(image, _class, (8, cv2.FONT_HERSHEY_SIMPLEX), cv2.FONT_HERSHEY_SIMPLEX, 0.3, text_bg_color, 1,
-                cv2.LINE_AA)
     random_chars = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
-    cv2.imwrite(save_directory + _class + "_%s.jpg" % random_chars, image)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Calculate the aspect ratio of the original image
+    aspect_ratio = gray_image.shape[1] / gray_image.shape[0]
+
+    # Define the new dimensions
+    new_width = 1280
+    new_height = int(new_width / aspect_ratio)
+
+    # If the new height is still greater than 720, adjust the width accordingly
+    if new_height > 720:
+        new_height = 720
+        new_width = int(new_height * aspect_ratio)
+
+    # Resize the image without stretching
+    resized_image = cv2.resize(gray_image, (new_width, new_height))
+
+    cv2.putText(resized_image, _class, (12, 42), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1,
+                cv2.LINE_AA)
+    cv2.putText(resized_image, _class, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1,
+                cv2.LINE_AA)
+
+
+    cv2.imwrite(save_directory + _class + "_%s.jpg" % random_chars, resized_image)
 
 
 file_types = {
